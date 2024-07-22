@@ -1,0 +1,83 @@
+DP because we have multiple options at every index and overlapping is seen.
+
+#1. Without memoization(time limit exceeded)
+class Solution {
+    public boolean solve(int nums[],int n,int idx)
+    {
+        if(idx==n-1)
+            return true;
+        if(idx>n-1)
+            return false;
+        for(int i=1;i<=nums[idx];i++)
+        {
+            if(solve(nums,n,idx+i))
+                return true;
+        }
+        return false;
+    }
+    public boolean canJump(int[] nums) {
+        return solve(nums,nums.length,0);
+    }
+}
+
+#2.With memoization
+//time limit exceeded on using array instead of HashMap
+class Solution {
+    HashMap<Integer,Boolean> mem=new HashMap<>();
+    public boolean solve(int nums[],int n,int idx)
+    {
+        if(idx==n-1)
+            return true;
+        if(mem.containsKey(idx))
+            return mem.get(idx);
+        if(idx>n-1)
+            return false;
+        for(int i=1;i<=nums[idx];i++)
+        {
+            if(solve(nums,n,idx+i))
+            {
+                mem.put(idx,true);
+                return true;
+            }    
+        }
+        mem.put(idx,false);
+        return false;
+    }
+    public boolean canJump(int[] nums) {
+        return solve(nums,nums.length,0);
+    }
+}
+
+#Bottoms up
+have an array 't' where t[i]=true =>we can reach t[i] using previous indexes of nums[].
+if t[n-1]=true (n=nums.length) =>solution exists
+      0 1 2 3 4
+nums=[2,3,1,1,4]        if(j+nums[j]>=i)=>t[i]=true(we can reach i), j=(i-1) to 
+      j i               but t[j] must be true as well =>if(j+nums[j]>=i && t[j]==true)
+t=[T,T,T,T,T]
+
+class Solution {
+    public boolean canJump(int[] nums) {
+        ArrayList<Boolean> arr=new ArrayList<>();
+        arr.add(true);
+        int flag=0;
+        for(int i=1;i<nums.length;i++)
+        {
+            flag=0;
+            for(int j=i-1;j>=0;j--)
+            {
+                if(j+nums[j]>=i && arr.get(j)==true)
+                {
+                    arr.add(true);
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0)
+                arr.add(false);
+        }
+        return arr.get(nums.length-1);
+    }
+}
+
+https://www.youtube.com/watch?v=pvg0yrD-E5w
