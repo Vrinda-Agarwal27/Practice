@@ -1,0 +1,40 @@
+USING HASHMAP
+class Solution {
+    public String convertToTitle(int columnNumber) {
+        HashMap<Integer,Character> map=new HashMap<>();
+        for(int i=0;i<26;i++)
+            map.put(i,(char)(65+i));
+        String ans="";
+        if(columnNumber<26)
+            {
+                return map.get(columnNumber-1)+"";
+            }
+        while(columnNumber>0)
+        {
+            columnNumber--;
+            System.out.println(map.get(columnNumber%26)+" "+columnNumber);
+           ans=map.get(columnNumber%26)+ans;
+           columnNumber/=26;
+            // if(columnNumber<=26)
+            // {
+            //     ans=map.get(columnNumber)+ans;
+            //     break;
+            // }
+        }
+        return ans;
+    }
+}
+
+WITHOUT USING HASHMAP
+class Solution {
+    public String convertToTitle(int columnNumber) {
+        String ans="";
+        while(columnNumber>0)
+        {
+            columnNumber--;
+            ans=(char)((columnNumber%26)+'A')+ans;
+           columnNumber/=26;
+        }
+        return ans;
+    }
+}
