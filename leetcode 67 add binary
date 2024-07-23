@@ -1,0 +1,20 @@
+Sum the digits, convert sum to binary, (%2 = result) , (/2 = carry over)
+class Solution {
+    public String addBinary(String a, String b) {
+        int i=a.length()-1,j=b.length()-1;
+        String ans="";
+        int carry=0;
+        while(i>=0||j>=0)
+        {
+            if(i>=0)
+                carry+=a.charAt(i--)-48;
+            if(j>=0)
+                carry+=b.charAt(j--)-48;
+            ans=(char)((carry%2)+48)+ans;
+            carry=carry/2;
+        }
+        if(carry==1)
+            ans='1'+ans;
+        return ans;
+    }
+}
