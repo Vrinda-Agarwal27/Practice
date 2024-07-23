@@ -1,0 +1,55 @@
+Simple intuition is either consider product of three largest numbers or product of two smallest(if negative) and 1 largest number.
+Whichever is greater return that
+class Solution {
+    public int maximumProduct(int[] nums) {
+        Arrays.sort(nums);
+        int n=nums.length;
+        int m1 = nums[n-1]*nums[n-2]*nums[n-3];
+        int m2 = nums[0]*nums[1]*nums[n-1];
+        if(m1>m2){
+            return m1;
+        }
+        else{
+            return m2;
+        }
+    }
+}
+
+LOGIC TO FIND LARGEST,SECOND LARGEST AND THIRD LARGEST ELEMENT IN ARRAY WITHOUT SORTING
+
+ int arr[]={2, 6, 23, 98, 24, 35, 78};
+        int fmax=Integer.MIN_VALUE,smax=Integer.MIN_VALUE,tmax=Integer.MIN_VALUE;
+        int fmin=Integer.MAX_VALUE,smin=Integer.MAX_VALUE;
+        for(int i:arr)
+        {
+            if(i>tmax)
+            {
+                if(i>fmax)
+                {
+                    tmax=smax;
+                    smax=fmax;
+                    fmax=i;
+                }
+                else if(i>smax)
+                {
+                    tmax=smax;
+                    smax=i;
+                }
+                else
+                    tmax=i;
+            }
+            if(i<smin)
+            {
+                if(i<fmin)
+                {
+                    smin=fmin;
+                    fmin=i;
+                }
+                else
+                    smin=i;
+            }
+        }
+        System.out.println(fmax+" "+smax+" "+tmax);
+        System.out.println(fmin+" "+smin);
+        Arrays.sort(arr);
+        System.out.println(Arrays.toString(arr));
