@@ -1,0 +1,108 @@
+#BRUTE FORCE 1
+sort the array, traverse the 1st and last string and compare them char by char, break at the first index of mismatch. The string upto that index is the ans.
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        String ans="";
+        for(int i=0;i<strs.length-1;i++)
+        {
+            for(int j=0;j<strs.length-i-1;j++)
+            {
+                if(strs[j].compareTo(strs[j+1])>0)
+                {
+                    String t=strs[j];
+                    strs[j]=strs[j+1];
+                    strs[j+1]=t;
+                }
+            }
+        }
+        for(int i=0;i<Math.min(strs[0].length(),strs[strs.length-1].length());i++)
+        {
+            if(strs[0].charAt(i)!=strs[strs.length-1].charAt(i))
+            return ans;
+            ans+=strs[0].charAt(i);
+        }
+        return ans;
+    }
+}
+
+#TRIE DATA STRUCTURE
+create a trie out of the array, add a count to each level which maintains count of children of each node. If count exceeds 1, break. The elements upto that level are the answer.
+
+
+class Solution {
+    static class Node
+    {
+        Node children[];
+        boolean eow;
+        int count;
+        Node()
+        {
+            children=new Node[26];
+            for(int i=0;i<26;i++)
+                children[i]=null;
+            eow=false;
+            count=0;
+        }
+    }
+    public Node root=new Node();
+    public void insert(String w)
+    {
+        Node curr=root;
+        for(int i=0;i<w.length();i++)
+        {
+            int idx=w.charAt(i)-'a';
+            if(curr.children[idx]==null)
+            {
+                curr.children[idx]=new Node();
+                curr.count++;
+            }
+            // if(i==w.length()-1)
+            //     curr.children[idx].eow=true;
+            curr=curr.children[idx];
+        }
+        curr.eow=true;
+    }
+    public String longestCommonPrefix(String[] strs) {
+        int t;
+        for(String s:strs)
+            insert(s);
+        Node curr=root;
+        String ans="";
+        while(curr!=null)
+        {
+            if(curr.count>1||curr.eow)
+                break;
+            
+            for(int i=0;i<26;i++)
+            {
+                if(curr.children[i]!=null)
+                {
+                    ans+=(char)(i+'a');
+                    curr=curr.children[i];
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+#OPTIMAL SOLUTION
+Take the 1st string as the initial prefix. Shorten the prefix until each string in the array contains the prefix since the beginning.
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if(strs==null || strs.length==0)
+            return "";
+        String prefix=strs[0];
+        for(int i=1;i<strs.length;i++)
+        {
+            while(strs[i].indexOf(prefix)!=0)
+            {
+                prefix=prefix.substring(0,prefix.length()-1);
+                if(prefix.isEmpty())
+                    return "";
+            }
+        }
+        return prefix;
+    }
+}
