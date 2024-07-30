@@ -1,0 +1,102 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+#1.LINEAR SEARCH
+
+import java.util.*;
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Try programiz.pro");
+        int b[] = { 1, 2, 8, 10, 10, 12, 19 };
+        int k = 20,floor=0,ceil=0;
+        if(k<b[0])
+        {
+            floor=-1;
+            ceil=b[0];
+            System.out.println("floor does not exist , ceil="+ceil);
+            System.exit(1);
+        }
+        if(k>b[b.length-1])
+        {
+            ceil=-1;
+            floor=b[b.length-1];
+            System.out.println("floor="+floor+" , ceil does not exist");
+            System.exit(1);
+        }
+        for(int i=0;i<b.length-1;i++)
+        {
+            if(k>b[i] && k<b[i+1])
+            {
+                floor=b[i];
+                ceil=b[i+1];
+            }
+            else if(k==b[i])
+            {
+                floor=b[i];
+                ceil=b[i];
+            }
+        }
+        if(k==b[b.length-1])
+        {
+            System.out.println("floor = "+k+" , ceil = "+k);
+            System.exit(1);
+        }
+        System.out.println("floor = "+floor+" , ceil = "+ceil);
+        
+    }
+}
+
+#2.BINARY SEARCH
+
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+import java.util.*;
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Try programiz.pro");
+        int b[] = { 1, 2, 8, 10, 10, 12, 19 };
+        int k = 20,floor=-1,ceil=-1;
+        if(k<b[0])
+        {
+            floor=-1;
+            ceil=b[0];
+            System.out.println("floor does not exist , ceil="+ceil);
+            System.exit(1);
+        }
+        if(k>b[b.length-1])
+        {
+            ceil=-1;
+            floor=b[b.length-1];
+            System.out.println("floor="+floor+" , ceil does not exist");
+            System.exit(1);
+        }
+        int l=0,h=b.length-1;
+        int m=0;
+        while(l<=h)
+        {
+            m=(l+h)/2;
+            if(b[m]==k)
+            {
+                floor=b[m];
+                ceil=b[m];
+                break;
+            }
+            else if(b[m]>k)
+            {
+                h=m-1;
+                ceil=b[m];
+                if(m>0)
+                floor=b[m-1];
+            }
+            else
+            {
+                l=m+1;
+                floor=b[m];
+                if(m<b.length-1)
+                ceil=b[m+1];
+            }
+        }
+        System.out.println("floor = "+floor+" , ceil = "+ceil);
+        
+    }
+}
