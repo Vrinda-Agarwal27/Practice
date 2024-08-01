@@ -1,0 +1,25 @@
+class Solution {
+    public String reverseWords(String s) {
+        // s=s.trim();
+        String arr[]=s.trim().split("\\s+");
+        //(\\s+) handles multiple white spaces
+        for(String i:arr)
+        System.out.print(i);
+        int j=arr.length-1;
+        for(int i=0;i<arr.length/2;i++)
+        {
+            String t=arr[j];
+            arr[j--]=arr[i];
+            arr[i]=t;
+        }
+        String ans="";
+        // System.out.println(Arrays.toString(arr));
+        for(String i:arr)
+        {
+            ans+=i+" ";
+        }
+        ans=ans.trim();
+        return ans;
+        // return Arrays.toString(arr);
+    }
+}
