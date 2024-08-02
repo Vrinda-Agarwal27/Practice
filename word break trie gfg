@@ -1,0 +1,105 @@
+The code ran fine for this testcase but while submitting gave error. To resolve this, an instance of root was created for every testcase refer to line 94.
+100
+b bbbbbbb baa abbaaa ababbba bbbbaaa bbaaab aabbaaaa aa aa babbb aabbaa b bb aba bbbbbb aba bbbabaaa baa aabb aabb aaabbb baab ababa bb babbbabb abab bbaaa ba aaa bb aabbba abab 
+babaaba baaabab babba babbb ababbaa baab aababbbb babbba aaaababa baaabbb abbaaba bbaabaaa aaabbba abbabbaab abb abbb baabbbaa babbbbbab b bbb bb b aababab abab b abb bbbbb bb abbb 
+abbbbaa bbbbb babb bbabaab abbbbaa bbbbbaa abbbab aababb ba bbbbaaabb aa bbbbaa babbabbb bbbabbbbb babbb bab abaaa bbaabb abbb abaabb bb ba aababbaaa bbbbba abb babababab aaabbba 
+abbaabb bbbbbabb aa bbbabbaa aaa abba b aba b bababb aabaaaa
+a
+
+//{ Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+public class GfG
+{
+    public static void main(String args[])
+        {
+            Scanner sc = new Scanner(System.in);
+            int t = sc.nextInt();
+            while(t-->0)
+                {
+                    int n;
+                    n = sc.nextInt();
+                    ArrayList<String> arr = new ArrayList<String>();
+                    for(int i = 0;i<n;i++)
+                        {
+                            String p = sc.next();
+                            arr.add(p);
+                        }
+                    String line = sc.next();
+                    Solution obj = new Solution();  
+                    System.out.println(obj.wordBreak(line,arr));  
+                    
+                }
+        }
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution
+{
+    static class Trie
+    {
+        Trie children[];
+        boolean eow;
+        Trie()
+        {
+            children=new Trie[26];
+            for(int i=0;i<26;i++)
+                children[i]=null;
+            eow=false;
+        }
+    }
+    //public static Trie root=new Trie();
+    public static void insert(Trie root,String word)
+    {
+        Trie curr=root;
+        for(int i=0;i<word.length();i++)
+        {
+            int idx=word.charAt(i)-'a';
+            if(curr.children[idx]==null)
+                curr.children[idx]=new Trie();
+            curr=curr.children[idx];
+        }
+        curr.eow=true;
+    }
+    public static boolean search(Trie root,String word)
+    {
+        Trie curr=root;
+        for(int i=0;i<word.length();i++)
+        {
+            int idx=word.charAt(i)-'a';
+            if(curr.children[idx]==null)
+                return false;
+            curr=curr.children[idx];
+        }
+        return curr.eow==true;
+    }
+    public static boolean Helper(Trie root,String word)
+    {
+        if(word.length()==0)
+            return true;
+        for(int i=1;i<=word.length();i++)
+        {
+            if(search(root,word.substring(0,i)) && Helper(root,word.substring(i)))
+            return true;
+        }
+        return false;
+    }
+    public static int wordBreak(String A, ArrayList<String> B )
+    {
+        Trie root=new Trie();
+//this instance was then passed
+        //code here
+        for(String i:B)
+            insert(root,i);
+        //System.out.println(search("mang"));
+        if(Helper(root,A)==true)
+            return 1;
+        else
+            return 0;
+    }
+}
