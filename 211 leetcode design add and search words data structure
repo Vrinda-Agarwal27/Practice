@@ -1,0 +1,65 @@
+character by character match/search =trie
+class WordDictionary {
+    WordDictionary children[];
+    boolean eow;
+    public WordDictionary() {
+        children=new WordDictionary[26];
+        for(int i=0;i<26;i++)
+            children[i]=null;
+        eow=false;
+    }
+    
+    public void addWord(String word) {
+        WordDictionary curr=this;
+        for(int i=0;i<word.length();i++)
+        {
+            char c=word.charAt(i);
+            int idx=c-'a';
+            if(curr.children[idx]==null)
+                curr.children[idx]=new WordDictionary();
+            curr=curr.children[idx];
+        }
+        curr.eow=true;
+    }
+    #MODIFY SEARCH TO HANDLE "."
+    public boolean searchHelp(WordDictionary root,String word)
+    {
+        WordDictionary curr=root;
+        for(int i=0;i<word.length();i++)
+        {
+            char c=word.charAt(i);
+            int idx;
+            if(c=='.')
+            {
+                for(int j=0;j<26;j++)
+                {
+                    if(curr.children[j]!=null)
+                    {
+                        if(searchHelp(curr.children[j],word.substring(i+1)))
+                            return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                idx=c-'a';
+                if(curr.children[idx]==null)
+                return false;
+            }
+            curr=curr.children[idx];
+        }
+        return curr.eow==true;
+    }
+    public boolean search(String word) {
+        WordDictionary curr=this;
+        return searchHelp(curr,word);
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
