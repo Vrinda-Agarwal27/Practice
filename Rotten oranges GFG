@@ -1,0 +1,124 @@
+Use BFS since we need to check all neighbors at once.
+
+//{ Driver Code Starts
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0)
+        {
+            String[] s = br.readLine().trim().split(" ");
+            int n = Integer.parseInt(s[0]);
+            int m = Integer.parseInt(s[1]);
+            int[][] grid = new int[n][m];
+            for(int i = 0; i < n; i++){
+                String[] S = br.readLine().trim().split(" ");
+                for(int j = 0; j < m; j++){
+                    grid[i][j] = Integer.parseInt(S[j]);
+                }
+            }
+            Solution obj = new Solution();
+            int ans = obj.orangesRotting(grid);
+            System.out.println(ans);
+        }
+    }
+}
+// } Driver Code Ends
+
+class Pair
+    {
+        int t1,t2;
+        Pair(int i,int j)
+        {
+            t1=i;
+            t2=j;
+        }
+    }
+class Solution
+{
+    
+    Queue<Pair> q=new LinkedList<>();
+    
+    public boolean isValid(int i,int j,int r,int c,int grid[][])
+    {
+        if(i>=0 && i<r && j>=0 && j<c && grid[i][j]==1 )
+            return true;
+        return false;
+    }
+    //Function to find minimum time required to rot all oranges. 
+    public int orangesRotting(int[][] grid)
+    {
+        // Code here
+        int r=grid.length;
+        int c=grid[0].length;
+        int fresh=0,time=0;
+        
+        //stores initially rotted oranges
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if(grid[i][j]==2)
+                    q.add(new Pair(i,j));
+                else if(grid[i][j]==1)
+                    fresh++;
+            }
+        }
+        
+        //no fresh oranges=>all oranges are already rotten
+        if(fresh==0)
+            return 0;
+        
+            
+        while(!q.isEmpty())
+        {
+            int size=q.size();
+            int temp=0;
+            while(size!=0)
+            {
+                int x1=q.peek().t1;
+                int y1=q.peek().t2;
+                q.remove();
+                
+                //check all neighbors of x1,y1
+                int x[]={-1,1,0,0};
+                int y[]={0,0,-1,1};
+                
+                for(int i=0;i<4;i++)
+                {
+                    int ax=x[i]+x1;
+                    int ay=y[i]+y1;
+                    
+                    if(isValid(ax,ay,r,c,grid))
+                    {
+                        temp++;
+                        grid[ax][ay]=2;
+                        q.add(new Pair(ax,ay));
+                    }
+                }
+                size--;
+            }
+            if(temp!=0)
+                time++;
+        }
+        //if fresh oranges are left even after complete bfs traversal
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    time=0;
+                    break;
+                }
+            }
+        }
+        
+        return (time==0)?-1:time;
+    }
+}
