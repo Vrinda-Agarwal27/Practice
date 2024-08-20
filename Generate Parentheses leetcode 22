@@ -1,0 +1,111 @@
+PURE BACKTRACKING
+
+class Solution {
+    public boolean isValid(String curr)
+    {
+        Stack<Character> st=new Stack<>();
+        for(char c:curr.toCharArray())
+        {
+            if(c=='(')
+                st.push(c);
+            else
+            {
+                 if(st.isEmpty())
+                    return false;
+                st.pop();
+            }
+        }
+        return st.size()==0;
+    }
+    public void Helper(int n,int idx,List<String> ans,String curr)
+    {
+        if(idx==2*n)
+        {
+            if(isValid(curr))
+                ans.add(curr);
+            return;
+        }
+        curr+="(";
+        Helper(n,idx+1,ans,curr);
+       curr= curr.substring(0,curr.length()-1);
+        curr+=")";
+        Helper(n,idx+1,ans,curr);
+         curr= curr.substring(0,curr.length()-1);
+    }
+   public List<String> generateParenthesis(int n) {
+        List<String> ans=new ArrayList<>();
+        if(n==0)
+            return ans;
+        Helper(n,0,ans,"");
+        return ans;
+    }
+}
+
+
+CHECK VALIDITY USING COUNT INSTEAD OF STACK
+
+class Solution {
+     public boolean isValid(String curr)
+    {
+        // Stack<Character> st=new Stack<>();
+        int cnt=0;
+        for(char c:curr.toCharArray())
+        {
+            if(c=='(')
+               cnt++;
+            else
+                cnt--;
+            if(cnt<0)
+                break;
+        }
+        return cnt==0;
+    }
+    public void Helper(int n,int idx,List<String> ans,String curr)
+    {
+        if(idx==2*n)
+        {
+            if(isValid(curr))
+                ans.add(curr);
+            return;
+        }
+        curr+="(";
+        Helper(n,idx+1,ans,curr);
+       curr= curr.substring(0,curr.length()-1);
+
+        curr+=")";
+        Helper(n,idx+1,ans,curr);
+         curr= curr.substring(0,curr.length()-1);
+    }
+   public List<String> generateParenthesis(int n) {
+        List<String> ans=new ArrayList<>();
+        if(n==0)
+            return ans;
+        Helper(n,0,ans,"");
+        return ans;
+    }
+}
+
+
+RECURSION WITH REDUCED BRANCHES IN THE BACKTRACKING TREE
+
+class Solution {
+    public void Helper(int n,int open,int close,List<String> ans,String curr)
+    {
+        if(curr.length()==2*n)
+        {
+            ans.add(curr);
+            return;
+        }
+        if(open<n)
+            Helper(n,open+1,close,ans,curr+"(");
+        if(close<open)
+            Helper(n,open,close+1,ans,curr+")");
+    }
+    public List<String> generateParenthesis(int n) {
+        List<String> ans=new ArrayList<>();
+        if(n==0)
+            return ans;
+        Helper(n,0,0,ans,"");
+        return ans;
+    }
+}
