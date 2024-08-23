@@ -1,0 +1,40 @@
+FIND PIVOT, APPLY BINARY SEARCH ON LEFT AND RIGHT OF ARRAY.
+https://youtu.be/U1VsdRgVevY?si=QAzvemKlCc_n7pkx
+class Solution {
+    public int findPiv(int nums[])
+    {
+        int l=0,h=nums.length-1,mid;
+        while(l<h)
+        {
+            mid=(l+h)/2;
+            if(nums[mid]>nums[h])
+                l=mid+1;
+            else
+                h=mid;
+        }
+        return h;
+    }
+    public int BinSearch(int nums[],int target,int l,int h)
+    {
+        while(l<=h)
+        {
+            int mid=(l+h)/2;
+            if(nums[mid]==target)
+                return mid;
+            else if(nums[mid]<target)
+                l=mid+1;
+            else
+                h=mid-1;
+        }
+        return -1;
+    }
+    public int search(int[] nums, int target) {
+
+        int p=findPiv(nums);
+        int idx=BinSearch(nums,target,0,p-1);
+        if(idx!=-1)
+            return idx;
+        idx=BinSearch(nums,target,p,nums.length-1);
+        return idx;
+    }
+}
