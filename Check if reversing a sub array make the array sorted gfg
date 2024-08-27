@@ -1,0 +1,78 @@
+APPROACH 1 O(NLOG N)
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+import java.util.*;
+class HelloWorld {
+    public static boolean checkReverse(int arr[],int n)
+    {
+        int temp[]=new int[n];
+        for(int i=0;i<n;i++)
+            temp[i]=arr[i];
+        
+        Arrays.sort(temp);
+        int f;
+        for(f=0;f<n && temp[f]==arr[f];f++);
+        // if(f>=n)
+        //     return true;
+        int b;
+        for(b=n-1;b>=0 && temp[b]==arr[b];b--);
+        
+        if(f>=b)
+            return true;
+       
+        for(int i=f+1;i<=b;i++)
+            if(arr[i-1]<arr[i])
+                return false;
+        return true;
+    }
+    public static void main(String[] args) {
+        System.out.println("Try programiz.pro");
+        int arr[] = {1, 2, 5, 4, 3}; 
+        int n = arr.length; 
+  
+        if (checkReverse(arr, n)) { 
+            System.out.print("Yes"); 
+        } else { 
+            System.out.print("No"); 
+        } 
+    }
+}
+
+APPROACH 2 O(N)
+first increasing elements , then decreasing and then again increasing
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+import java.util.*;
+class HelloWorld {
+    public static boolean checkReverse(int arr[],int n)
+    {
+       int i;
+       for(i=1;i<n && arr[i-1]<arr[i];i++);
+       if(i==n)
+        return true;
+       int j;
+       for(j=i;j<n && arr[j-1]>arr[j];j++)
+            if(i>1 && arr[j]<arr[i-2])
+                return false;
+        
+         if(j==n)
+            return true;
+        int k=j;
+        if(k<n && arr[k]<arr[i-1])
+            return false;
+        for(k=j;k<n && arr[k-1]<arr[k];k++);
+        
+        return true;
+    }
+    public static void main(String[] args) {
+        System.out.println("Try programiz.pro");
+        int arr[] = {1,2,5,4,3}; 
+        int n = arr.length; 
+  
+        if (checkReverse(arr, n)) { 
+            System.out.print("Yes"); 
+        } else { 
+            System.out.print("No"); 
+        } 
+    }
+}
