@@ -1,0 +1,31 @@
+SLIDING WINDOW
+You will need a variable maxRepeatCount to keep track of the maximum count of the repeating character and a HashMap to store the frequency of characters in the current window.
+ * 1. Expand the map towards the right and keep updating the count of the newly added character in the HashMap and update maxRepeatCount with the maximum count of any repeating character encountered so far.
+ * 2. Calculate the count of non-repeating characters in the current window. 
+ * 3. If the count exceeds k, it means you have to perform more than k replacements to make all characters in the window the same. 
+ * 4. In this case, shrink the window towards left and decrement the count of leftmost character until the count of non-repeating characters becomes less than or equal to k.
+ * 5. After adjusting the window, update maxLength with the maximum length of the current substring.
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        HashMap<Character,Integer> map=new HashMap<>();
+        int left=0,winSize=0,maxRep=Integer.MIN_VALUE,maxLen=Integer.MIN_VALUE;
+        for(int right=0;right<s.length();right++)
+        {
+            char curr=s.charAt(right);
+            map.put(curr,map.getOrDefault(curr,0)+1);
+            maxRep=Math.max(maxRep,map.get(curr));
+            winSize=right-left+1;
+            int nonRep=winSize-maxRep;
+            if(nonRep>k)
+            {
+                char t=s.charAt(left);
+                map.put(t,map.get(t)-1);
+                left++;
+                winSize=right-left+1;
+            }
+            maxLen=Math.max(maxLen,winSize);
+        }
+        return maxLen;
+    }
+}
