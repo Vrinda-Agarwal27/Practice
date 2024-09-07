@@ -1,0 +1,48 @@
+#RECURSION + MEMOIZATION
+  steal=nums[i], i+2//skips adjacent house
+  skip=i+1
+  return max(skip,steal)
+  class Solution {
+    public int Helper(int nums[],int idx,int dp[])
+    {
+        if(idx>=nums.length)
+            return 0;
+        if(dp[idx]!=0)
+            return dp[idx];
+           int consider=nums[idx]+Helper(nums,idx+2,dp);
+            int skip=Helper(nums,idx+1,dp);
+        return dp[idx]=Math.max(consider,skip);
+        // return Math.max(consider,skip);
+    }
+    public int rob(int[] nums) {
+       int dp[]=new int[nums.length+1];
+        return Helper(nums,0,dp);
+    }
+}
+
+#BOTTOM UP
+  nums=[1,2,3,1]
+  take array dp[]=[ , , , , ]
+  define state of dp[i] i.e. what does dp[i] denote?
+  dp[i]=profit made uptil that house
+  =>dp[0]=0
+  =>dp[1]=nums[0]
+
+  at 2nd house, we have two options, 
+    skip previous house and consider profit made till house before previous 
+    consider profit made till previous house
+  =>dp[2]=nums[1]+dp[0]
+  =>dp[2]=dp[1]
+
+  hence, dp[i]=max(nums[i-1]+dp[i-2],dp[i-1])
+
+  class Solution {
+    public int rob(int[] nums) {
+       int dp[]=new int[nums.length+1];
+       dp[0]=0;
+       dp[1]=nums[0];
+       for(int i=2;i<=nums.length;i++)
+            dp[i]=Math.max(nums[i-1]+dp[i-2],dp[i-1]);
+        return dp[nums.length];
+    }
+}
